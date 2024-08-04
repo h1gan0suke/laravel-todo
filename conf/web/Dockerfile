@@ -42,3 +42,15 @@ RUN a2enmod rewrite
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
+
+COPY package*.json ./
+
+RUN npm install
+
+RUN npm install -g vite
+
+COPY . .
+
+RUN composer install
+
+CMD ["npm", "run", "dev"]

@@ -5,6 +5,9 @@ services:
       - 8080:80
     volumes:
       - ./app:/var/www/html
+    depends_on:
+      - postgres
+
   postgres:
     image: postgres:14.7-alpine3.17
     environment:
@@ -15,6 +18,7 @@ services:
       - 5432:5432
     volumes:
       - postgresql:/var/lib/postgresql/data
+
   node:
     image: node:lts-alpine
     working_dir: /var/www/html
@@ -22,7 +26,11 @@ services:
       - 5173:5173
     volumes:
       - ./app:/var/www/html
-    command: sh -c "cd /var/www/html && npm run dev"
+    command: >
+      sh -c "cd /var/www/html && npm install && npm run dev"
+    depends_on:
+      - app
+
   pgadmin4:
     image: dpage/pgadmin4
     environment:
@@ -32,5 +40,6 @@ services:
       - postgres
     ports:
       - 8888:80
+
 volumes:
   postgresql:
