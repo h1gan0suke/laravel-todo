@@ -22,3 +22,7 @@ Route::get('/log-test', function () {
     Log::info('Log test message');
     return 'Log test complete';
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
